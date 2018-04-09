@@ -9,7 +9,7 @@
     function getRestaurantLocationByID($id, $db){
         $sqlQuery = "SELECT * FROM RESTAURANT AS RES 
         NATURAL INNER JOIN LOCATION AS LOC
-        WHERE RES.RESTAURANTID = '$id' or RES.NAME = '$id';";
+        WHERE RES.RESTAURANTID LIKE '%$id%' or RES.NAME LIKE  '%$id%';";
         $result = pg_query($db, $sqlQuery) or die("Could not execute the query!...");
         $jsonObj = json_encode(pg_fetch_all($result));
         echo $jsonObj;
@@ -44,6 +44,7 @@
         FROM MENUITEM AS MI  INNER JOIN RESTAURANT AS RES ON MI.RESTAURANTID = RES.RESTAURANTID 
         INNER JOIN LOCATION AS LOC ON RES.RESTAURANTID = LOC.RESTAURANTID
         GROUP BY RES.NAME,MANAGER_NAME,HOUR_OPEN,HOUR_CLOSE,HOUR_CLOSE;";
+
         $result = pg_query($db, $sqlQuery) or die("Could not execute the query!...");
         $jsonObj = json_encode(pg_fetch_all($result));
         echo $jsonObj;
@@ -160,8 +161,7 @@
                     FROM RATER R NATURAL INNER JOIN RATING R2
                     WHERE R.NAME = '$string'
                     ORDER BY AVG_RATING DESC
-                    LIMIT 1);
-        ";
+                    LIMIT 1);";
         $result = pg_query($db, $sqlQuery) or die("Could not execute the query!...");
         $jsonObj = json_encode(pg_fetch_all($result));
         echo $jsonObj;
@@ -201,9 +201,7 @@
                                             AND R3.RESTAURANTID = RATING.RESTAURANTID)
                 FROM RATING
                 WHERE RATING.USERID = R.USERID
-                            AND R3.RESTAURANTID = RATING.RESTAURANTID) >= 2;
-        
-        ";
+                            AND R3.RESTAURANTID = RATING.RESTAURANTID) >= 2;";
         $result = pg_query($db, $sqlQuery) or die("Could not execute the query!...");
         $jsonObj = json_encode(pg_fetch_all($result));
         echo $jsonObj;
@@ -262,7 +260,7 @@
             getRatingComparison($_POST['parameter'], $db);
             break;
         case 'getDiverseRating':
-            getRatingComparison($_POST['parameter'], $db);
+            getDiverseRating($_POST['parameter'], $db);
             break;
     }
 ?>
