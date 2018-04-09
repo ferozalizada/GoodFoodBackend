@@ -9,7 +9,7 @@
     function getRestaurantLocationByID($id, $db){
         $sqlQuery = "SELECT * FROM RESTAURANT AS RES 
         NATURAL INNER JOIN LOCATION AS LOC
-        WHERE RES.RESTAURANTID LIKE '%$id%' or RES.NAME LIKE  '%$id%';";
+        WHERE RES.RESTAURANTID ILIKE '%$id%' or RES.NAME ILIKE  '%$id%';";
         $result = pg_query($db, $sqlQuery) or die("Could not execute the query!...");
         $jsonObj = json_encode(pg_fetch_all($result));
         echo $jsonObj;
