@@ -53,7 +53,7 @@
     die( json_encode(array(
         "status" => "success",
         "message" => 'Welcome',
-        "data" => $_SESSION['name']
+        "data" => $_SESSION['userid']
         // "password" => 
 
     )) );

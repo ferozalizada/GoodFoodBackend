@@ -14,6 +14,14 @@
         $jsonObj = json_encode(pg_fetch_all($result));
         echo $jsonObj;
     }
+    function getRestaurantDetails($id, $db){
+        $sqlQuery = "SELECT * FROM RESTAURANT AS RES 
+        NATURAL INNER JOIN LOCATION AS LOC
+        WHERE RES.RESTAURANTID = '$id' or RES.NAME = 'id';";
+        $result = pg_query($db, $sqlQuery) or die("Could not execute the query!...");
+        $jsonObj = json_encode(pg_fetch_all($result));
+        echo $jsonObj;
+    }
     function getMenuOfRestaurant($name, $db){
         $sqlQuery = "SELECT RES.NAME,MI.NAME,MI.TYPE,MI.CATEGORY,MI.DESCRIPTION,MI.PRICE
         FROM MENUITEM AS MI INNER JOIN RESTAURANT AS RES ON MI.RESTAURANTID = RES.RESTAURANTID
@@ -23,6 +31,7 @@
         $jsonObj = json_encode(pg_fetch_all($result));
         echo $jsonObj;
     }
+    //return teh type details of restaurants
     function getTypeDetails($type, $db){
         $sqlQuery = "SELECT RES.NAME,TYPE,HOUR_OPEN,HOUR_CLOSE,STREET_ADDRESS,PHONE_NUMBER,MANAGER_NAME,FIRSTOPEN_DATE
         FROM RESTAURANT AS RES NATURAL INNER JOIN LOCATION AS LOC
@@ -70,7 +79,7 @@
     function getRestaurantRatingNotCondition($type, $db){//c-1
         $sqlQuery = "SELECT DISTINCT RES.NAME,RES.TYPE,LOC.PHONE_NUMBER
         FROM RESTAURANT AS RES NATURAL INNER JOIN LOCATION AS LOC INNER JOIN MENUITEM AS MI on RES.RESTAURANTID = MI.RESTAURANTID
-        WHERE MI.ITEMID IN (SELECT ITEMID FROM RATINGITEM WHERE (DATE >= '01-01-2015' OR DATE <= '01-31-2015'));";
+        WHERE MI.ITEMID IN (SELECT ITEMID FROM RATINGITEM WHERE (DATE >= '01-01-2015' OR DATE <= '31-01-2015'));";
         $result = pg_query($db, $sqlQuery) or die("Could not execute the query!...");
         $jsonObj = json_encode(pg_fetch_all($result));
         echo $jsonObj;
@@ -206,8 +215,7 @@
         $jsonObj = json_encode(pg_fetch_all($result));
         echo $jsonObj;
     }
-
-
+    
 
 
 
@@ -262,5 +270,8 @@
         case 'getDiverseRating':
             getDiverseRating($_POST['parameter'], $db);
             break;
+        case 'getRestaurantDetails':
+            getRestaurantDetails($_POST['parameter'], $db);
+                   
     }
 ?>

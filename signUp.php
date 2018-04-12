@@ -3,7 +3,7 @@
 include_once("dbconnection.php");
 // echo "Hi this is the post variable";
 // print_r($_POST);
-header('Access-Control-Allow-Origin: *');
+// header('Access-Control-Allow-Origin: *');
 // print_r($_POST);
 
     $firstName = $_POST['firstName'];
